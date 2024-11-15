@@ -22,8 +22,10 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
-    - name: Setup Android
+    - name: Setup Android SDK
       uses: android-actions/setup-android@v2.0.10
+    - name: Setup Android NDK
+      uses: nttld/setup-ndk@v1.5.0
     - name: Install npm deps
       run: npm i
     - name: Start build
