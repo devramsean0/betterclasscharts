@@ -31,6 +31,8 @@ jobs:
     - run: echo "NDK_HOME=$ANDROID_NDK_HOME" >> $GITHUB_ENV  
     - name: Install npm deps
       run: npm i
+    - name: Setup Rust targets
+      run: rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
     - name: Start build
       env:
         NDK_HOME: ${{ env.NDK_HOME }}
