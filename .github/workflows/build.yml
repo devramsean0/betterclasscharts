@@ -26,6 +26,8 @@ jobs:
       uses: android-actions/setup-android@v2.0.10
     - name: Setup Android NDK
       uses: nttld/setup-ndk@v1.5.0
+      with:
+        ndk-version: r26d
     - name: Install npm deps
       run: npm i
     - name: Start build
