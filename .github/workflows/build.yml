@@ -12,11 +12,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: NPM Cache
-      uses: actions/cache@4.1.2
+      uses: actions/cache@v4.1.2
       with: 
         path: 'node_modules/**'
     - name: Rust Cache
-      uses: actions/cache@4.1.2
+      uses: actions/cache@v4.1.2
       with: 
         path: 'src-tauri/target/**'
     - name: Setup Node v22
