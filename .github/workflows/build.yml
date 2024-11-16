@@ -7,6 +7,26 @@ on:
     branches: [ "master" ]
 
 jobs:
+  desktop:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, wundows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Rust Cache
+      uses: actions/cache@v4.1.2
+      with:
+        key: 'android-rust'
+        path: 'src-tauri/target/**'
+    - name: Setup Node v22
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
+    - name: Install npm deps
+      run: npm i
+    - name: Build
+      run: npm run tauri build
   android:
     runs-on: ubuntu-latest
     steps:
@@ -49,18 +69,8 @@ jobs:
       env:
         NDK_HOME: ${{ env.NDK_HOME }}
       run: npm run tauri android build
-    - name: Download bundletool
-      run: curl -L -o bundletool.jar https://github.com/google/bundletool/releases/download/1.15.0/bundletool-all-1.15.0.jar
-    - name: Extract Universal APK
-      run: |
-        java -jar bundletool.jar build-apks \
-          --bundle=src-tauri/gen/android/app/build/outputs/bundle/universalRelease/app-universal-release.aab \
-          --output=output.apks \
-          --mode=universal \
-          --overwrite
-        unzip -p output.apks universal.apk > app-universal.apk
     - name: Upload Universal APK
       uses: actions/upload-artifact@v3
       with:
         name: app-universal.apk
-        path: app-universal.apk
+        path: src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release.apk
