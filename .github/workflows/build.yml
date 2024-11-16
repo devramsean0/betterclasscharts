@@ -19,6 +19,18 @@ jobs:
       with:
         key: 'android-rust'
         path: 'src-tauri/target/**'
+    - name: Install Linux deps
+      if: ${{ matrix.os }} == "ubuntu-latest"
+      run: |
+        sudo apt install libwebkit2gtk-4.1-dev \
+        build-essential \
+        curl \
+        wget \
+        file \
+        libxdo-dev \
+        libssl-dev \
+        libayatana-appindicator3-dev \
+        librsvg2-dev
     - name: Setup Node v22
       uses: actions/setup-node@v4
       with:
