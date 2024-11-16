@@ -37,6 +37,13 @@ jobs:
       run: npm i
     - name: Setup Rust targets
       run: rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+    - name: Setup Android Signing
+      run: |
+        cd src-tauri/gen/android
+        echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
+        echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
+        base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
+        echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
     - name: Build
       env:
         NDK_HOME: ${{ env.NDK_HOME }}
