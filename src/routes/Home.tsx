@@ -1,20 +1,15 @@
-import { A, useNavigate } from "@solidjs/router";
+import { useNavigate } from "@solidjs/router";
 import { Layout } from "../components/ui/layout";
 import Database from '@tauri-apps/plugin-sql';
-import { createRenderEffect, createSignal } from "solid-js";
+import { createRenderEffect } from "solid-js";
 import { IAccounts } from "../types/db";
 import { load } from "@tauri-apps/plugin-store";
+import { useAccount } from "../contexts/AccountContext";
+import { BehaviourInformation } from "../components/ui/information/behaviour";
 
 function Home() {
   const navigate = useNavigate();
-  const [account, setAccount] = createSignal<IAccounts>({
-    id: 0,
-    name: "",
-    classcharts_id: 0,
-    first_name: "",
-    last_name: "",
-    state: 0
-  });
+  const { account, setAccount } = useAccount();
   // Run code to check if a user has an active account and redirect them to the login page if they don't
   createRenderEffect(async () => {
     const db = await Database.load("sqlite:betterclasscharts.db");
@@ -42,9 +37,9 @@ function Home() {
     console.log("Active Account Found", account());
   });
   return (
-    <Layout title="Home" switcherEnabled={true} account={account()}>
-      <A href="/login">Login</A>
+    <Layout title="Home" switcherEnabled={true} backButton={false}>
       <h1>Hello World</h1>
+      <BehaviourInformation />
     </Layout>
   );
 }

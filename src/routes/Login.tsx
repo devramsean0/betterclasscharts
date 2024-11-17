@@ -1,7 +1,7 @@
 import { fetch } from "@tauri-apps/plugin-http";
 import { Input, SubmitButton } from "../components/form";
 import { Layout } from "../components/ui/layout";
-import { initStronghold, insertRecord, } from "../lib/stronghold";
+import { getRecord, initStronghold, insertRecord, } from "../lib/stronghold";
 import Database from "@tauri-apps/plugin-sql";
 import { IStudentLogin } from "../types/classcharts";
 import { useNavigate } from "@solidjs/router";
@@ -10,7 +10,7 @@ import { load } from "@tauri-apps/plugin-store";
 function Login() {
     const navigate = useNavigate();
     return (
-        <Layout title="Login" switcherEnabled={false}>
+        <Layout title="Login" switcherEnabled={false} backButton={false}>
             <form class="flex flex-col items-center justify-center" action="" onSubmit={async (ctx) => {
                 ctx.preventDefault();
                 // Initialise Datastore connections
@@ -38,7 +38,8 @@ function Login() {
                 const resJSON = await res.json() as IStudentLogin;
                 if (resJSON.success == 1) {
                     // Save the session ID in the encrypted store
-                    await insertRecord(strongholdClient, `${accountName}-auth`, resJSON.success == 1 ? String(resJSON.meta?.session_id) : "")
+                    await insertRecord(strongholdClient, `${accountName}-auth`, String(resJSON.meta?.session_id))
+                    console.log(`${accountName} Login Successfull`, await getRecord(strongholdClient, `${accountName}-auth`))
                     // Create record in the DB
                     const dbResult = await db.execute("INSERT INTO accounts (name, classcharts_id, first_name, last_name, state) VALUES ($1, $2, $3, $4, $5)",
                         [accountName, Number(resJSON.data?.id), String(resJSON.data?.first_name), String(resJSON.data?.last_name), 1]

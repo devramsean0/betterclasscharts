@@ -39,4 +39,44 @@ export interface IStudentLogin {
     };
     error?: string;
   }
-   
+
+export interface IBehaviour {
+  data?: {
+    timeline?: {
+      positive?: number;
+      negative?: number;
+      name?: string;
+      start?: string;
+      end?: string;
+    }[];
+    positive_reasons?: {
+      [k: string]: number;
+    };
+    negative_reasons?: {
+      [k: string]: number;
+    };
+    other_positive?: string[];
+    other_negative?: string[];
+    other_positive_count?: {}[];
+    other_negative_count?: {}[];
+  };
+  meta?: {
+    start_date?: string;
+    end_date?: string;
+    step_size?: string;
+  };
+  success?: number;
+}
+
+export interface IBehaviourError {
+  data?: {
+    [k: string]: unknown;
+  };
+  meta?: {
+    [k: string]: unknown;
+  };
+  success?: number;
+  expired?: number;
+  error?: string;
+}
+ 
