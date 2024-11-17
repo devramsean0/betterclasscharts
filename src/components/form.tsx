@@ -1,9 +1,9 @@
-export function Input(props: {id: string, label: string, required?: boolean}) {
+export function Input(props: {id: string, label: string, required?: boolean, password?: boolean}) {
     return (
         <div>
             <label for={props.id}>{props.label}:</label>
             <br />
-            <input id={props.id} class="border-2 rounded-md" required={props.required}/>
+            <input id={props.id} class="border-2 rounded-md" required={props.required} type={props.password ? "password" : ""} />
         </div>
     )
 }

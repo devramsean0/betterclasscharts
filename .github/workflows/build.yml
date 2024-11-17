@@ -100,4 +100,4 @@ jobs:
     steps:
     - name: Download artifacts
       uses: actions/download-artifact@v4
-    - run: ls -R my-artifact  
+    - run: ls
